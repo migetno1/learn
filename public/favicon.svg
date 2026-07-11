@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- ivory backing so the mark reads on light or dark tabs -->
+  <rect x="2" y="2" width="96" height="96" rx="22" fill="#FBF8F3"/>
+  <!-- solid outer ring -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#2E5D52" stroke-width="2.2"/>
+  <!-- fine clay dotted ring -->
+  <circle cx="50" cy="50" r="36" fill="none" stroke="#C9895F" stroke-width="1.8"
+          stroke-linecap="round" stroke-dasharray="0.5 6"/>
+  <!-- serif initials (Fraunces with serif fallback) -->
+  <text x="50.5" y="62" text-anchor="middle" font-family="Fraunces, Georgia, 'Times New Roman', serif"
+        font-weight="600" font-size="38" letter-spacing="-3" fill="#2E5D52">AH</text>
+  <!-- seal anchor dot -->
+  <circle cx="50" cy="78" r="2.2" fill="#C9895F"/>
+</svg>
