@@ -95,7 +95,7 @@ export function VadPage() {
               <JurisdictionStamp />
             </motion.div>
             <motion.figure className="learn-hero__art" style={{ y: imageY }}>
-              <img src={vadHero} width="1200" height="816" alt="Two abstract figures in conversation beside a branching path and open doorway" />
+              <img src={vadHero} width="1693" height="929" alt="Two abstract figures in conversation beside a branching path and open doorway" />
             </motion.figure>
           </div>
         </section>
@@ -207,7 +207,7 @@ export function VadPage() {
 
         <section className="learning-cta"><p className="eyebrow">Teach the legal decisions</p><h2>Ready for the room?</h2><p>Open the vignette-led presentation. The final misconception discussion can be omitted when time is short.</p><a className="button button--primary" href="./presentation/">Present this topic <ArrowRight size={18} aria-hidden="true" /></a></section>
       </main>
-      <footer className="site-footer"><span>Learn</span><span>Voluntary Assisted Dying · NSW learning guide</span><span>Current as at {vadMeta.currentAsAt}</span></footer>
+      <footer className="site-footer"><span className="footer-brand">Dr Alexander Ho</span><span>Voluntary Assisted Dying · NSW learning guide</span><span>Current as at {vadMeta.currentAsAt}</span></footer>
     </>
   )
 }

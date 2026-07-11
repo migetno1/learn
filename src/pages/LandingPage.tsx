@@ -70,7 +70,7 @@ export function LandingPage() {
           <p>Designed for medical students, GP registrars, and practising GPs.</p>
         </section>
       </main>
-      <footer className="site-footer"><span>Learn</span><span>Australian general practice education</span><span>© {new Date().getFullYear()}</span></footer>
+      <footer className="site-footer"><span className="footer-brand">Dr Alexander Ho</span><span>Australian general practice education</span><span>© {new Date().getFullYear()}</span></footer>
     </>
   )
 }

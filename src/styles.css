@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,500&family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
 
 :root {
   --ink: #102a32;
   --ink-soft: #334d54;
   --eucalyptus: #57756c;
   --eucalyptus-deep: #294d45;
+  --brand-forest: #2e5d52;
   --ivory: #f5f0e5;
   --paper: #fbf8f1;
   --ochre: #d39b43;
@@ -13,6 +14,7 @@
   --line: rgba(16, 42, 50, 0.18);
   --shadow: 0 24px 70px rgba(43, 55, 50, 0.13);
   --font-display: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+  --font-brand: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   color: var(--ink);
   background: var(--ivory);
@@ -99,11 +101,14 @@ button { font: inherit; }
 .brand-mark {
   display: inline-flex;
   align-items: center;
-  font-family: var(--font-display);
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-family: var(--font-brand);
+  font-size: 1.3rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.7;
 }
+
+.brand-mark em { color: var(--brand-forest); font-style: italic; }
 
 .header-purpose {
   margin: 0;
@@ -358,7 +363,7 @@ button { font: inherit; }
   text-transform: uppercase;
 }
 
-.site-footer span:first-child { color: white; font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.03em; text-transform: none; }
+.site-footer .footer-brand { color: white; font-family: var(--font-brand); font-size: 20px; font-weight: 400; letter-spacing: normal; line-height: 1.4; text-transform: none; }
 .site-footer span:last-child { justify-self: end; }
 
 /* Topic page */
@@ -436,6 +441,7 @@ button { font: inherit; }
 }
 
 @media (max-width: 760px) {
+  .brand-mark { font-size: 1.2rem; }
   .site-header { grid-template-columns: 1fr auto; width: min(100% - 40px, 1440px); min-height: 78px; }
   .header-purpose { display: none; }
   .header-link { grid-column: 2; }
@@ -503,15 +509,16 @@ button { font: inherit; }
 .vad-learn-page .jurisdiction-stamp strong { font-size: 16px; }
 .vad-learn-page .jurisdiction-stamp span, .vad-learn-page .jurisdiction-stamp p { font-size: 13px; }
 .vad-learn-page + .site-footer { font-size: 13px; }
-.learn-hero { width: min(100% - 64px, 1440px); min-height: calc(100svh - 96px); margin-inline: auto; padding: 30px 0 80px; }
-.learn-hero__topline { display: flex; align-items: center; justify-content: space-between; }
-.learn-hero__grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(500px, 1.05fr); gap: clamp(50px, 8vw, 130px); align-items: center; min-height: calc(100svh - 190px); }
+.learn-hero { position: relative; isolation: isolate; width: 100%; min-height: calc(100svh - 96px); padding: 30px max(32px, calc((100vw - 1440px) / 2)) 80px; overflow: hidden; }
+.learn-hero::after { position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, var(--ivory) 0%, color-mix(in srgb, var(--ivory) 96%, transparent) 30%, color-mix(in srgb, var(--ivory) 74%, transparent) 48%, transparent 70%); content: ''; pointer-events: none; }
+.learn-hero__topline { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; width: min(100%, 1440px); margin-inline: auto; }
+.learn-hero__grid { display: grid; grid-template-columns: minmax(0, 610px) 1fr; align-items: center; width: min(100%, 1440px); min-height: calc(100svh - 190px); margin-inline: auto; }
 .learn-hero__copy { position: relative; z-index: 2; }
 .learn-hero h1 { margin: 0; font-family: var(--font-display); font-size: clamp(4rem, 7.2vw, 8.2rem); font-weight: 500; letter-spacing: -.065em; line-height: .94; }
 .learn-hero h1 em { color: var(--eucalyptus); font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
 .learn-hero__copy > p:not(.eyebrow) { max-width: 580px; color: var(--ink-soft); font-size: clamp(1.15rem, 1.5vw, 1.35rem); line-height: 1.7; }
-.learn-hero__art { margin: 0; border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow); }
-.learn-hero__art img { width: 100%; aspect-ratio: 1.32; object-fit: cover; }
+.learn-hero__art { position: absolute; inset: 0; z-index: 0; margin: 0; background: var(--ivory); }
+.learn-hero__art img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
 
 .learning-disclaimer { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; padding: 28px max(32px, calc((100vw - 1440px) / 2)); color: var(--paper); background: var(--terracotta); }
 .learning-disclaimer strong { font-family: var(--font-display); font-size: 18px; }
@@ -763,8 +770,6 @@ button { font: inherit; }
 .presentation-mode .vad-presentation { scroll-snap-type: y proximity; }
 
 @media (max-width: 1050px) {
-  .learn-hero__grid { grid-template-columns: 1fr; padding-top: 80px; }
-  .learn-hero__art { width: 84%; margin-left: auto; }
   .learning-layout { grid-template-columns: 190px minmax(0, 1fr); gap: 50px; }
   .learning-prose { margin-left: 0; }
   .learning-section--ink { width: 100%; margin-left: 0; padding-inline: 50px; }
@@ -777,9 +782,18 @@ button { font: inherit; }
   .case-file-column { grid-template-columns: 1fr minmax(180px, 260px); grid-template-rows: auto; align-items: end; }
 }
 
+@media (max-width: 900px) {
+  .learn-hero { isolation: auto; width: min(100% - 64px, 1440px); margin-inline: auto; padding: 30px 0 80px; overflow: visible; }
+  .learn-hero::after { display: none; }
+  .learn-hero__topline, .learn-hero__grid { width: 100%; }
+  .learn-hero__grid { grid-template-columns: 1fr; gap: 60px; padding-top: 80px; }
+  .learn-hero__art { position: relative; inset: auto; z-index: auto; width: 100%; border: 1px solid var(--line); background: var(--paper); box-shadow: var(--shadow); }
+  .learn-hero__art img { height: auto; object-fit: fill; }
+}
+
 @media (max-width: 760px) {
   .mode-nav a { min-width: 90px; padding-inline: 10px; }
-  .learn-hero { width: min(100% - 40px, 1440px); min-height: auto; padding-bottom: 60px; }
+  .learn-hero { width: min(100% - 40px, 1440px); min-height: calc(100svh - 78px); padding-bottom: 60px; }
   .learn-hero__topline { align-items: flex-start; }
   .learn-hero__grid { gap: 50px; min-height: 0; padding-top: 70px; }
   .learn-hero h1 { font-size: clamp(3.7rem, 17vw, 6rem); }
