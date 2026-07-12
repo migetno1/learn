@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Learn Topic"
+  short_description: "Build and visually verify a Learn topic"
+  default_prompt: "Use $generate-topic to build a learning guide and presentation from a topic research, plan, and script."

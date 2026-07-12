@@ -39,6 +39,10 @@ Each topic may use one accent colour while retaining the global ink-and-ivory fo
 - Body and UI: **Inter**, with system sans fallback
 - Editorial emphasis: italic display text, used sparingly
 - Body size: minimum 16px; preferred 17–19px for teaching copy
+- Learning-guide teaching copy: minimum 17px; preferred 18–19px
+- Presentation teaching copy: minimum 18px
+- Presentation metadata and labels: minimum 14px
+- Learning-guide metadata and labels: minimum 13px
 - Long-form measure: 60–72 characters
 - Body line height: 1.6–1.75
 
@@ -49,6 +53,8 @@ Each topic may use one accent colour while retaining the global ink-and-ivory fo
 - Wide editorial compositions may break the reading column; prose may not
 - Maintain generous section spacing and a clear hierarchy
 - Topic pages use numbered chapters and a visible narrative progression
+- Published topics begin with a full-viewport editorial hero; mobile may stack the composition but should preserve the immersive first-screen experience
+- Core presentation scenes fit one 1440×900 stage in normal and fullscreen modes
 
 ## Components
 
@@ -64,8 +70,15 @@ Each topic may use one accent colour while retaining the global ink-and-ivory fo
 - Micro-interactions: 150–300ms
 - Section reveals: 350–500ms
 - Animate opacity and transforms; avoid layout-shifting properties
+- Prefer transform-led reveals. Text may begin at any opacity during an entrance animation; once the animation finishes, all text must be fully legible and meet WCAG AA contrast
 - Use no more than one or two prominent animated ideas per viewport
 - Always respect `prefers-reduced-motion`
+- Every presentation content unit must have a complete scroll lifecycle: transform and fade in as it enters, remain fully visible at rest, then transform and fade out after the viewport passes it. This applies to headings, body copy, labels, citations, cards, diagrams and meaningful illustration.
+- Animate a group only when it reads as one semantic unit. Do not animate both a wrapper and its text descendants; each property must have one animation owner.
+- Presentation exits should follow scroll direction, so content passed above the viewport exits upward and content not yet reached waits below. Reversing scroll must reverse that lifecycle coherently.
+- Entry staggering may clarify hierarchy, but exit should be prompt enough that the outgoing scene does not compete with the next scene.
+- Scene snapping and keyboard navigation must land with the active scene in its fully visible rest state; essential content must never depend on a click or on completing an animation.
+- Under `prefers-reduced-motion`, bypass the full lifecycle and render every essential presentation element immediately in its fully visible, contrast-safe rest state.
 
 ## Illustration
 
@@ -74,6 +87,15 @@ Each topic may use one accent colour while retaining the global ink-and-ivory fo
 - Prefer metaphor and human relationships over literal medical procedures
 - No embedded text, logos, watermarks, death iconography, or generic clinical props
 - Exact clinical diagrams must be code-native SVG/HTML rather than generated imagery
+- Aim for one meaningful illustration, diagram or substantial visual composition every two to three learning chapters and across consecutive presentation scenes
+- Generated illustration must carry narrative, atmosphere or a clear conceptual metaphor; it must not be generic decoration
+- Avoid consecutive presentation scenes that use the same text-and-card composition without a deliberate visual change
+
+## Interaction
+
+- Default to visible content. Add accordions, tabs, sorting, polls or staged reveals only when they materially improve learning
+- A fullscreen control, scene navigation and external/source links are utility controls and may remain available without making teaching content dependent on clicking
+- Every interactive teaching component must have a keyboard path, 44px target, reduced-motion-safe behaviour and a static fallback
 
 ## Accessibility and safety
 

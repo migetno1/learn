@@ -39,7 +39,7 @@ export function LandingPage() {
             <figcaption>
               <span>Featured topic</span>
               <strong>Voluntary Assisted Dying</strong>
-              <span>01 / 04</span>
+              <span>01 / 05</span>
             </figcaption>
           </motion.figure>
         </section>
