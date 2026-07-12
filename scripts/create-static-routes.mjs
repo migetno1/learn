@@ -13,7 +13,9 @@ const rootHtml = await readFile('dist/index.html', 'utf8')
 for (const route of routes) {
   const depth = route.split('/').length
   const prefix = '../'.repeat(depth)
-  const routeHtml = rootHtml.replaceAll('./assets/', `${prefix}assets/`)
+  const routeHtml = rootHtml
+    .replaceAll('./assets/', `${prefix}assets/`)
+    .replaceAll('./favicon.svg', `${prefix}favicon.svg`)
   await mkdir(`dist/${route}`, { recursive: true })
   await writeFile(`dist/${route}/index.html`, routeHtml)
 }
