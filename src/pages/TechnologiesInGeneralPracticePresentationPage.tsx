@@ -6,12 +6,32 @@ import { technologyJourney } from '../data/technologyContent'
 import heroArt from '../assets/ai-cerebral-hero.webp'
 import michaelArt from '../assets/ai-consultation.webp'
 import verificationArt from '../assets/ai-verification.webp'
-import futureArt from '../assets/ai-future-horizons.webp'
 import learningArt from '../assets/ai-education-workflow.webp'
+import evidenceArt from '../assets/tech-evidence-review.webp'
+import followUpArt from '../assets/tech-follow-up.webp'
+import monitoringArt from '../assets/tech-monitoring.webp'
+import treatmentChoiceArt from '../assets/tech-treatment-choice.webp'
+import retinalScreeningArt from '../assets/tech-retinal-screening.webp'
+import preconsultationArt from '../assets/tech-preconsultation.webp'
+import careGapArt from '../assets/tech-care-gap.webp'
+import secondCheckArt from '../assets/tech-second-check.webp'
+import patientPlanArt from '../assets/tech-patient-plan.webp'
+import humanCloseArt from '../assets/tech-human-close.webp'
 
 const journeyIds = technologyJourney.map((item) => `tech-${item.id}`)
 const sectionIds = ['tech-opening', 'tech-michael', ...journeyIds, 'tech-appendix', 'tech-close']
-const visualById: Record<string, string> = { scribe: verificationArt, monitor: futureArt, optimise: futureArt, retina: heroArt }
+const visualById: Record<string, { src: string; alt: string; side: 'left' | 'right' }> = {
+  before: { src: preconsultationArt, alt: 'Michael gathers several concerns into one coherent story before his general-practice appointment', side: 'left' },
+  scribe: { src: verificationArt, alt: 'A clinician and patient talk while a hand assembles an accurate record from layered fragments', side: 'right' },
+  prompt: { src: careGapArt, alt: 'A GP checks the source record behind one defined care-gap prompt while talking with Michael', side: 'left' },
+  'second-check': { src: secondCheckArt, alt: 'A clinician-led path is supported by a separate, bounded second-check pathway', side: 'right' },
+  evidence: { src: evidenceArt, alt: 'A GP and older patient review source papers together beside a library of evidence', side: 'left' },
+  explain: { src: patientPlanArt, alt: 'A GP turns reviewed sources into a clear plan and Michael explains it back in his own words', side: 'right' },
+  'follow-up': { src: followUpArt, alt: 'A regional school-bus driver receives a reminder while a practice team owns the follow-up worklist', side: 'right' },
+  monitor: { src: monitoringArt, alt: 'A patient takes a home measurement while a clinician reviews a bounded trend with a visible break in monitoring', side: 'left' },
+  optimise: { src: treatmentChoiceArt, alt: 'A patient and GP consider several treatment paths together', side: 'right' },
+  retina: { src: retinalScreeningArt, alt: 'A clinician helps a patient use a retinal camera beside gradable and ungradable image motifs', side: 'left' },
+}
 
 export function TechnologiesInGeneralPracticePresentationPage() {
   const reduceMotion = useReducedMotion()
@@ -47,7 +67,7 @@ export function TechnologiesInGeneralPracticePresentationPage() {
       '.tech-close .scene-inner > .jurisdiction-stamp',
     ]
     const textTargets = Array.from(document.querySelectorAll<HTMLElement>(textSelectors.join(',')))
-    const visualTargets = Array.from(document.querySelectorAll<HTMLElement>('.tech-presentation .presentation-scene > img'))
+    const visualTargets = Array.from(document.querySelectorAll<HTMLElement>('.tech-presentation .presentation-scene > img, .tech-scene-visual-frame'))
     const sceneIndexes = new Map<Element, number>()
 
     textTargets.forEach((target) => {
@@ -58,7 +78,7 @@ export function TechnologiesInGeneralPracticePresentationPage() {
       if (scene) sceneIndexes.set(scene, index + 1)
     })
     visualTargets.forEach((target) => {
-      const restOpacity = target.classList.contains('tech-scene-visual') ? '.1' : target.closest('.tech-michael-scene') ? '.38' : target.closest('.tech-appendix-scene') ? '.16' : '1'
+      const restOpacity = target.closest('.tech-michael-scene') ? '.72' : target.closest('.tech-appendix-scene') ? '.72' : '1'
       target.classList.add('tech-presentation-visual-motion')
       target.style.setProperty('--tech-visual-opacity', restOpacity)
     })
@@ -142,19 +162,21 @@ export function TechnologiesInGeneralPracticePresentationPage() {
         const visual = visualById[item.id]
         const variant = index % 4
         return <section className={`presentation-scene tech-journey-scene tech-journey-scene--${variant} tech-journey-scene--${item.tone}`} id={`tech-${item.id}`} data-scene={String(index + 3).padStart(2, '0')} key={item.id}>
-          {visual && <img className="tech-scene-visual" src={visual} alt="" aria-hidden="true" />}
-          <div className="scene-inner">
-            <div className="tech-scene-title"><div><p className="eyebrow">{item.phase}</p><h2>{item.title}</h2></div><Maturity tone={item.tone}>{item.maturity}</Maturity></div>
-            <p className="tech-scene-tool">{item.tool}</p>
-            <div className="tech-scene-core"><article><span>Task</span><p>{item.how}</p></article><article><span>For Michael</span><p>{item.michael}</p></article><article><span>Evidence boundary</span><p>{item.evidence}</p></article></div>
-            <div className="tech-scene-guardrail"><CircleAlert aria-hidden="true" /><p><strong>Failure to anticipate:</strong> {item.failure}</p><ShieldCheck aria-hidden="true" /><p><strong>Clinician action:</strong> {item.oversight}</p></div>
+          <div className={`scene-inner${visual ? ` tech-scene-layout tech-scene-layout--visual-${visual.side}` : ''}`}>
+            <div className="tech-scene-copy">
+              <div className="tech-scene-title"><div><p className="eyebrow">{item.phase}</p><h2>{item.title}</h2></div><Maturity tone={item.tone}>{item.maturity}</Maturity></div>
+              <p className="tech-scene-tool">{item.tool}</p>
+              <div className="tech-scene-core"><article><span>Task</span><p>{item.how}</p></article><article><span>For Michael</span><p>{item.michael}</p></article><article><span>Evidence boundary</span><p>{item.evidence}</p></article></div>
+              <div className="tech-scene-guardrail"><CircleAlert aria-hidden="true" /><p><strong>Failure to anticipate:</strong> {item.failure}</p><ShieldCheck aria-hidden="true" /><p><strong>Clinician action:</strong> {item.oversight}</p></div>
+            </div>
+            {visual && <figure className="tech-scene-visual-frame"><img src={visual.src} alt={visual.alt} /></figure>}
           </div>
         </section>
       })}
 
       <section className="presentation-scene tech-appendix-scene" id="tech-appendix" data-scene="13"><img src={learningArt} alt="" aria-hidden="true" /><div className="scene-inner"><p className="eyebrow">Clinician-learning appendix · indirect patient benefit</p><h2>Prepare better.<br /><em>Do not outsource understanding.</em></h2><div className="tech-appendix-present"><article><Bot aria-hidden="true" /><h3>Diagnostic brainstorming</h3><p>Independent reasoning first. Synthetic prompt second. Authoritative verification third.</p><strong>Critical appraisal case—not validated patient-specific support.</strong></article><article><UserRoundCheck aria-hidden="true" /><h3>AI-assisted Anki</h3><p>Selected source. One testable point. Check every qualifier. Delete plausible clutter.</p><strong>Faster production is not evidence of better learning.</strong></article></div></div></section>
 
-      <section className="presentation-scene tech-close" id="tech-close" data-scene="14"><div className="scene-inner"><p className="eyebrow">The transfer</p><h2>Useful technology<br /><em>leaves care more human.</em></h2><div className="tech-close-grid"><article><Bot aria-hidden="true" /><h3>The system may</h3><p>Capture · retrieve · classify · prioritise · draft · monitor</p></article><article><HeartHandshake aria-hidden="true" /><h3>The clinician and patient still</h3><p>Choose · interpret · verify · decide · respond · remain accountable</p></article></div><blockquote>Define the task. Appraise the workflow. Protect choice and data. Keep a fallback. Own the consequence.</blockquote><TechnologyStatus dark /></div></section>
+      <section className="presentation-scene tech-close" id="tech-close" data-scene="14"><img src={humanCloseArt} alt="Michael and his GP leave the consultation side by side with a clear plan" /><div className="tech-close__scrim" /><div className="scene-inner"><p className="eyebrow">The transfer</p><h2>Useful technology<br /><em>leaves care more human.</em></h2><div className="tech-close-grid"><article><Bot aria-hidden="true" /><h3>The system may</h3><p>Capture · retrieve · classify · prioritise · draft · monitor</p></article><article><HeartHandshake aria-hidden="true" /><h3>The clinician and patient still</h3><p>Choose · interpret · verify · decide · respond · remain accountable</p></article></div><blockquote>Define the task. Appraise the workflow. Protect choice and data. Keep a fallback. Own the consequence.</blockquote><TechnologyStatus dark /></div></section>
     </main>
     {presenting && <nav className="presenter-controls" aria-label="Presentation controls"><span>{String(active + 1).padStart(2, '0')} / {String(sectionIds.length).padStart(2, '0')}</span><button type="button" onClick={() => move(-1)} disabled={active === 0} aria-label="Previous scene"><ChevronUp aria-hidden="true" /></button><button type="button" onClick={() => move(1)} disabled={active === sectionIds.length - 1} aria-label="Next scene"><ChevronDown aria-hidden="true" /></button><button type="button" onClick={exitPresentation} aria-label="Exit presentation"><X aria-hidden="true" /></button></nav>}
     <footer className="presentation-footer"><a href="../">Open the learning guide <ArrowRight aria-hidden="true" /></a><span>Australia · Current as at 12 July 2026</span></footer>

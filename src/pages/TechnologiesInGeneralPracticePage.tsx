@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, BookOpenCheck, CircleAlert, Eye, HeartHandshake, Languages, MapPin, ShieldCheck, Smartphone, UserRoundCheck, WifiOff } from 'lucide-react'
+import { ArrowLeft, ArrowRight, BookOpenCheck, CheckCheck, CircleAlert, GitCompareArrows, HeartHandshake, Languages, MapPin, ScanSearch, ShieldCheck, UserRoundCheck, WifiOff } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { SiteHeader } from '../components/SiteHeader'
@@ -7,15 +7,41 @@ import { safetyQuestions, technologyChapters, technologyJourney } from '../data/
 import heroArt from '../assets/ai-cerebral-hero.webp'
 import michaelArt from '../assets/ai-consultation.webp'
 import verificationArt from '../assets/ai-verification.webp'
-import monitoringArt from '../assets/ai-future-horizons.webp'
 import learningArt from '../assets/ai-education-workflow.webp'
-import landscapeArt from '../assets/ai-task-landscape.webp'
+import preconsultationArt from '../assets/tech-preconsultation.webp'
+import careGapArt from '../assets/tech-care-gap.webp'
+import evidenceArt from '../assets/tech-evidence-review.webp'
+import patientPlanArt from '../assets/tech-patient-plan.webp'
+import followUpArt from '../assets/tech-follow-up.webp'
+import monitoringArt from '../assets/tech-monitoring.webp'
+import treatmentChoiceArt from '../assets/tech-treatment-choice.webp'
+import retinalScreeningArt from '../assets/tech-retinal-screening.webp'
 
-const artById: Record<string, string | undefined> = {
-  scribe: verificationArt,
-  evidence: landscapeArt,
-  monitor: monitoringArt,
-  retina: landscapeArt,
+const artById: Record<string, { src: string; alt: string; caption?: string } | undefined> = {
+  before: { src: preconsultationArt, alt: 'Michael gathers his symptoms, work concerns and priorities before his general-practice appointment' },
+  scribe: { src: verificationArt, alt: 'A clinician and patient talk while an accurate record is assembled from the consultation' },
+  prompt: { src: careGapArt, alt: 'A GP checks the source record behind one defined care-gap prompt while speaking with Michael' },
+  evidence: { src: evidenceArt, alt: 'Michael and his GP review source papers together beside a library of evidence' },
+  explain: { src: patientPlanArt, alt: 'A GP turns reviewed sources into a clear written plan and Michael explains it back in his own words' },
+  'follow-up': { src: followUpArt, alt: 'Michael receives a reminder at the bus depot while the practice team owns the follow-up worklist' },
+  monitor: { src: monitoringArt, alt: 'Michael takes a home measurement while a clinician reviews a bounded trend with a visible break in monitoring' },
+  optimise: { src: treatmentChoiceArt, alt: 'Michael and his GP consider several possible treatment paths together' },
+  retina: { src: retinalScreeningArt, alt: 'Michael uses a retinal camera with clinical support beside illustrative gradable and ungradable image motifs', caption: 'Editorial illustration only—not a diagnostic image or an example of classifier output.' },
+}
+
+function SecondCheckWorkflow() {
+  const steps = [
+    { icon: BookOpenCheck, label: '1 · Independent assessment', copy: 'History, examination, record and ordinary clinical reasoning come first.' },
+    { icon: ScanSearch, label: '2 · Bounded second check', copy: 'Defined encounter data enters an evaluated system with a stated intended purpose.' },
+    { icon: GitCompareArrows, label: '3 · Compare, do not defer', copy: 'The GP checks the prompt against the entered facts, local evidence and Michael’s context.' },
+    { icon: CheckCheck, label: '4 · Clinician-owned action', copy: 'Accept, disagree or escalate—and document the reasoning and follow-up.' },
+  ]
+
+  return <figure className="tech-second-check-flow" aria-labelledby="second-check-flow-title">
+    <figcaption><span>Code-native workflow</span><strong id="second-check-flow-title">A second check sits after clinical reasoning—not in place of it.</strong></figcaption>
+    <ol>{steps.map(({ icon: Icon, label, copy }, index) => <li key={label}><div><Icon aria-hidden="true" /><span>{label}</span></div><p>{copy}</p>{index < steps.length - 1 && <ArrowRight className="tech-second-check-flow__arrow" aria-hidden="true" />}</li>)}</ol>
+    <p className="tech-second-check-flow__boundary"><CircleAlert aria-hidden="true" /><span><strong>Interpret both output and silence.</strong> A persuasive prompt is not authority, and no prompt is not reassurance.</span></p>
+  </figure>
 }
 
 function ChapterHeader({ number, eyebrow, children }: { number: string; eyebrow: string; children: React.ReactNode }) {
@@ -62,7 +88,7 @@ export function TechnologiesInGeneralPracticePage() {
         <nav className="contents-nav" aria-label="On this page"><p>Michael’s care journey</p>{technologyChapters.map(([id, label], index) => <a key={id} href={`#${id}`}><span>{String(index + 1).padStart(2, '0')}</span>{label}</a>)}</nav>
         <div className="learning-content">
           <section className="learning-section tech-michael" id="michael"><ChapterHeader number="01" eyebrow="Start with the person">Meet Michael—before the technology</ChapterHeader><div className="learning-prose">
-            <figure className="tech-editorial-art"><img src={michaelArt} alt="Editorial illustration of Michael speaking with his GP" /></figure>
+            <figure className="tech-editorial-art"><img src={michaelArt} alt="Editorial illustration of Michael speaking with his GP" loading="lazy" decoding="async" /></figure>
             <div className="tech-case-grid"><article><span>Fictional patient</span><h3>Michael, 64</h3><p>A self-employed school-bus driver who lives outside town. He books for worsening urinary frequency and nocturia, with known BPH.</p></article><article><span>The broader story</span><h3>What does not fit neatly?</h3><p>Thirst, fatigue, disrupted sleep and concern about staying alert on the morning route. Ordinary assessment later identifies type 2 diabetes; no AI makes the diagnosis.</p></article></div>
             <blockquote>“I need a plan I can understand, and I cannot keep coming back into town for every small thing.”</blockquote>
             <div className="tech-preferences"><p><MapPin aria-hidden="true" /><span><strong>Access</strong> Travel, work timing and patchy connectivity matter.</span></p><p><BookOpenCheck aria-hidden="true" /><span><strong>Communication</strong> Michael prefers concise written steps, then teach-back.</span></p><p><UserRoundCheck aria-hidden="true" /><span><strong>Choice</strong> He can refuse a tool, correct data and choose a non-digital path.</span></p><p><HeartHandshake aria-hidden="true" /><span><strong>Relationship</strong> Technology must support—not displace—the conversation.</span></p></div>
@@ -70,14 +96,15 @@ export function TechnologiesInGeneralPracticePage() {
 
           {technologyJourney.map((item) => <section className={`learning-section tech-journey-section tech-journey-section--${item.tone}`} id={item.id} key={item.id}><ChapterHeader number={item.number} eyebrow={item.phase}>{item.title}</ChapterHeader><div className="learning-prose">
             <div className="tech-tool-heading"><div><p className="section-tag">Technology category</p><h3>{item.tool}</h3></div><Maturity tone={item.tone}>{item.maturity}</Maturity></div>
-            {artById[item.id] && <figure className={`tech-editorial-art tech-editorial-art--${item.id}`}><img src={artById[item.id]} alt="" aria-hidden="true" /></figure>}
+            {artById[item.id] && <figure className={`tech-editorial-art tech-editorial-art--${item.id}`}><img src={artById[item.id]?.src} alt={artById[item.id]?.alt} loading="lazy" decoding="async" />{artById[item.id]?.caption && <figcaption>{artById[item.id]?.caption}</figcaption>}</figure>}
+            {item.id === 'second-check' && <SecondCheckWorkflow />}
             <div className="tech-mechanism"><article><span>How it works</span><p>{item.how}</p></article><article><span>Workflow</span><p>{item.workflow}</p></article><article><span>Patient benefit</span><p>{item.benefit}</p></article></div>
             <div className="tech-michael-thread"><strong>For Michael</strong><p>{item.michael}</p></div>
             <div className="tech-evidence-boundary"><article><ShieldCheck aria-hidden="true" /><div><h3>Evidence and maturity</h3><p>{item.evidence} <TechCitations sources={[...item.sources]} /></p></div></article><article><CircleAlert aria-hidden="true" /><div><h3>Failure to anticipate</h3><p>{item.failure}</p></div></article><article><UserRoundCheck aria-hidden="true" /><div><h3>Clinician oversight</h3><p>{item.oversight}</p></div></article></div>
           </div></section>)}
 
           <section className="learning-section tech-appendix" id="appendix"><ChapterHeader number="12" eyebrow="Clinician-learning appendix">How the GP prepares to care better</ChapterHeader><div className="learning-prose">
-            <figure className="tech-editorial-art"><img src={learningArt} alt="A clinician-educator moving from verified sources to learning resources" /></figure>
+            <figure className="tech-editorial-art"><img src={learningArt} alt="A clinician-educator moving from verified sources to learning resources" loading="lazy" decoding="async" /></figure>
             <p className="lead">These workflows may improve the GP’s preparation, but their patient benefit is indirect. They belong after Michael’s care journey—not at its centre.</p>
             <div className="tech-appendix-grid"><article><h3>Diagnostic brainstorming</h3><p>Reason independently first. Use a fictional or de-identified prompt to expose omissions, then verify against authoritative sources. Public chatbots are not validated patient-specific decision support.</p><Maturity tone="boundary">Critical appraisal case</Maturity><TechCitations sources={['G2', 'A4']} /></article><article><h3>AI-assisted Anki cards</h3><p>Give the model selected, non-identifiable source material. Keep one learning point per card, check every qualifier and delete plausible clutter.</p><Maturity tone="boundary">Education only · weak direct evidence</Maturity><TechCitations sources={['K1']} /></article></div>
           </div></section>
